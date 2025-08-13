@@ -5,7 +5,7 @@ const WebSocket = require("ws");
 const admin = require("firebase-admin");
 
 // Firebase Admin başlatılıyor
-const serviceAccount = require("./firebase-service-account.json");
+const serviceAccount = require(process.env.FIREBASE_SERVICE_ACCOUNT);
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
