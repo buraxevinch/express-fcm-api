@@ -1,5 +1,3 @@
-const fs = require("fs");
-const https = require("https");
 const express = require("express");
 const WebSocket = require("ws");
 const admin = require("firebase-admin");
@@ -12,6 +10,9 @@ admin.initializeApp({
 
 const app = express();
 app.use(express.json());
+
+// HTTP sunucusu
+const server = require("http").createServer(app);
 
 // WebSocket sunucusu
 const wss = new WebSocket.Server({ server });
@@ -83,7 +84,8 @@ app.post("/broadcast", async (req, res) => {
   });
 });
 
-// HTTPS ve WSS 443 portunda çalışıyor
-server.listen(443, () => {
-  console.log("WSS sunucusu 443 portunda aktif");
+// Render kendi PORT değişkenini kullanır
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+  console.log(`WSS sunucusu ${PORT} portunda aktif`);
 });
