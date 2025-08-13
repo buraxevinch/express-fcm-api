@@ -13,11 +13,6 @@ admin.initializeApp({
 const app = express();
 app.use(express.json());
 
-// SSL sertifikaları (Let's Encrypt veya başka sağlayıcıdan)
-const privateKey = fs.readFileSync("/home/u2368924/ssl/keys/acf95_25b1f_c5f8531b1781cdc77ba1cb25a01be15b.key", "utf8");
-const certificate = fs.readFileSync("/home/u2368924/ssl/certs/CloudFlare_Origin_Certificate_acf95_25b1f_2228119860_d2c97a297d6ab1f516a1fc4feca9a88d.crt", "utf8");
-const server = https.createServer({ key: privateKey, cert: certificate }, app);
-
 // WebSocket sunucusu
 const wss = new WebSocket.Server({ server });
 let clients = [];
