@@ -1,4 +1,4 @@
-require('dotenv').config();
+require("dotenv").config();
 const express = require("express");
 const WebSocket = require("ws");
 const admin = require("firebase-admin");
@@ -83,6 +83,10 @@ app.post("/broadcast", async (req, res) => {
     socketDelivered: sentCount,
     pushDelivered: fcmCount,
   });
+});
+
+app.get("/", (req, res) => {
+  res.send("FCM WebSocket API is running.");
 });
 
 // Render kendi PORT değişkenini kullanır
