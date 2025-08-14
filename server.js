@@ -23,6 +23,7 @@ wss.on("connection", (ws) => {
   clients.push(ws);
 
   ws.on("message", (message) => {
+    console.log("Yeni mesaj:", message.toString());
     try {
       const data = JSON.parse(message);
       if (data.type === "identify") {
@@ -35,7 +36,6 @@ wss.on("connection", (ws) => {
       console.error("Geçersiz mesaj verisi:", err);
     }
   });
-
   ws.on("close", () => {
     clients = clients.filter((client) => client !== ws);
   });
@@ -58,18 +58,9 @@ app.post("/broadcast", async (req, res) => {
       sentCount++;
     } else if (client.fcmToken) {
       try {
-        await admin.messaging().send({
-          token: client.fcmToken,
-          notification: {
-            title: title || "Bildirim",
-            body: message || "",
-          },
-          data: {
-            target: String(target),
-            icon: icon || "",
-            time: String(time || ""),
-          },
-        });
+        await admin
+          .messaging()
+          .send({ token: client.fcmToken, notification: { title: title || "Bildirim", body: message || "" }, data: { target: String(target), icon: icon || "", time: String(time || "") } });
         fcmCount++;
       } catch (err) {
         console.error("FCM gönderilemedi:", err);
@@ -77,12 +68,7 @@ app.post("/broadcast", async (req, res) => {
     }
   }
 
-  res.json({
-    status: "OK",
-    messageSent: req.body,
-    socketDelivered: sentCount,
-    pushDelivered: fcmCount,
-  });
+  res.json({ status: "OK", messageSent: req.body, socketDelivered: sentCount, pushDelivered: fcmCount });
 });
 
 app.get("/", (req, res) => {
