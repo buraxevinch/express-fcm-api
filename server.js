@@ -1,4 +1,5 @@
 require("dotenv").config();
+const cors = require("cors");
 const express = require("express");
 const WebSocket = require("ws");
 const admin = require("firebase-admin");
@@ -10,6 +11,8 @@ admin.initializeApp({
 });
 
 const app = express();
+app.use(cors());
+// app.use(cors({ origin: "https://www.mydomain.com", methods: ["GET", "POST"], allowedHeaders: ["Content-Type"] }));
 app.use(express.json());
 
 // HTTP sunucusu
